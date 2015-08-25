@@ -41,7 +41,11 @@ class IndexController extends Zend_Controller_Action
     {
         // action body
     }
-
+    
+    public function login()
+    {
+	
+    }	    
 
 }
 
