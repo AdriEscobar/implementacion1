@@ -9,13 +9,34 @@ class IndexController extends Zend_Controller_Action
 
     public function indexAction()
     {
-//	$usuario = new Application_Model_DbTable_Usuario();
+//
+        $form = new Application_Form_index();
+        $form->submit->SetLabel('Login');
+        $this->view->form = $form;
 
+        if($this->getRequest()->isPost()) {
+           $formData = $this->getRequest()->getPost();
+           if($form->isValid($formData)) {
+//              $usuario = $form->getValue('usuario');
+              $password= $form->getValue('password');
+              $usuario = new Application_Model_DbTable_Usuario();
+              $usuario -> login($form->getValue('usuario'), $password);
+        //IMPORTANT!!!!                 
+        //should not always redirect
+              if ($usuario){
+                  $this->_helper->redirector('indexL');
+              } else {
+                echo('usuario o contraseña incorrecta');
+              }
+           } else {
+                $form->populate($formData);
+           }
+        }
     }
 
     public function consultasAction()
     {
-	$form = new Application_Form_Search();
+	$form = new Application_Form_Consultas();
 	$form->submit->setLabel('Buscar');
 	$this->view->form = $form;
 
@@ -42,12 +63,8 @@ class IndexController extends Zend_Controller_Action
         // action body
     }
     
-    public function login()
-    {
-	
-    }	    
-
 }
+
 
 
 
