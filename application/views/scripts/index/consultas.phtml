@@ -1,0 +1,20 @@
+<?php 
+$this->title = "Consultas";
+$this->headTitle($this->title);
+
+echo $this->form;
+
+?>
+
+<table>
+<th>Nombre</th>
+<?php if($this->usuario): ?>
+<?php foreach($this->usuario as $usuario): ?>
+<tr>
+ <td><?php echo $this->escape($usuario->nombre);?></td>
+</td>
+<?php endforeach; ?>
+<?php else: ?>
+<p><?php var_dump($this->usuario); ?></p>
+<?php endif; ?>
+</table>

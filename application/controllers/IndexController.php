@@ -19,12 +19,16 @@ class IndexController extends Zend_Controller_Action
            if($form->isValid($formData)) {
 //              $usuario = $form->getValue('usuario');
               $password= $form->getValue('password');
-              $usuario = new Application_Model_DbTable_Usuario();
-              $usuario -> login($form->getValue('usuario'), $password);
+              $u= new Application_Model_DbTable_Usuario();
+              $u-> login($form->getValue('usuario'), $password);
         //IMPORTANT!!!!                 
         //should not always redirect
-              if ($usuario){
-                  $this->_helper->redirector('indexL');
+              if ($u){
+		if($u->perfil === 1){
+                  $this->_helper->redirector('profesor');
+		} else {
+		  $this->_helper->redirector('estudiante');
+		}
               } else {
                 echo('usuario o contraseña incorrecta');
               }
@@ -43,9 +47,10 @@ class IndexController extends Zend_Controller_Action
 	if ($this->getRequest()->isPost()) {
 	    $formData = $this->getRequest()->getPost();
             if($form->isValid($formData)){
-		$nombre = $form->getValue('nombre');
+		$materia = $form->getValue('materia');
+		$cursadas= $form->getValue('cursadas');
 		$EIA = new Application_Model_Dbtable_Materia();
-		$EIA-> searchMateria($nombre);
+		$EIA-> searchMateria($materia, $cursadas);
 		$this->view->EIA = $EIA->fetchALL();
 	    } else {
 		$form->populate($formData);
@@ -63,6 +68,14 @@ class IndexController extends Zend_Controller_Action
         // action body
     }
     
+    public function profesorAction()
+    {
+
+    }    
+
+    public function estudianteAction(){
+
+    }	
 }
 
 
